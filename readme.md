@@ -1,10 +1,16 @@
 #  Rules
 
-A simple fuzzy logic engine that mirrors GKRule and GKRuleSystem, but written in Swift, typed, and produces a less ambiguous state by introducing additional objects.
+A simple fuzzy logic engine that mirrors GKRule and GKRuleSystem, but written in Swift, typed, and produces a less ambiguous state by introducing additional lightweight components.
+
+The full list of components are:
+- `Rule`: Objects the user defines for interpreting state and making assertions about facts.
+- `RuleSystem`: An object used for evaluating a set of rules.
+- `RuleEditor`: An object provided to rules for accessing state, making their assertions, or getting information from already asserted facts.
+- `RuleResult`: The final structure which allows you to query the fuzzy result for included facts and grades.
 
 This replicates the majority of the rule/rule system introduced in GameplayKit, but omits the plist and serialization archiving because that's something I don't plan on using.
 
-## Simple Examples
+## Simple Example
 
 ```swift
 // 1
@@ -49,6 +55,7 @@ let grade = result.grade(for: .playerInSight)
 4. Generate a state and provide it to the evaluation function to get a `RuleResult`
 5. Interpret results by using `grade`/`minimumGrade`/`maximumGrade` on the results.
 
+## Real-World Example
 A more complicated system might work to blend values for more unique and emergent results:
 
 ```swift
