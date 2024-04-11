@@ -5,8 +5,9 @@
 
 import Foundation
 
-/// A rule
-class Rule<State, Fact: Hashable> {
+/// A rule to be used in the context of a rule system, with a predicate to be tested
+/// and an action to be executed when the test succeeds.
+open class Rule<State, Fact: Hashable> {
 
     /// The importance of the rule relative to others in a rule system’s agenda.
     var salience: Int = 0
@@ -22,11 +23,11 @@ class Rule<State, Fact: Hashable> {
         self.action = action
     }
 
-    func evaluatePredicate(editor: RuleEditor<State, Fact>) -> Bool {
+    open func evaluatePredicate(editor: RuleEditor<State, Fact>) -> Bool {
         return predicate(editor)
     }
 
-    func performAction(editor: RuleEditor<State, Fact>) {
+    open func performAction(editor: RuleEditor<State, Fact>) {
         action(editor)
     }
 }

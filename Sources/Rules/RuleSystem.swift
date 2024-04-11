@@ -6,7 +6,7 @@
 import Foundation
 
 /// A RuleSystem object manages a list of rules
-class RuleSystem<State, Fact: Hashable> {
+public class RuleSystem<State, Fact: Hashable> {
 
     // MARK: Managing Rules
 

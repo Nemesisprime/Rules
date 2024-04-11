@@ -5,24 +5,24 @@
 
 import Foundation
 
-struct RuleResult<State, Fact: Hashable> {
+public struct RuleResult<State, Fact: Hashable> {
 
     /// An immutable copy of the state associated with the evaluated rule result
-    let state: State
+    public let state: State
 
     /// A raw copy of the facts and grades generated from the evaluation
     private let assertedFactsAndGrades: [Fact: Double]
 
     /// The list of facts claimed by the rule system
-    var facts: [Fact] {
+    public var facts: [Fact] {
         return assertedFactsAndGrades.keys.map { $0 }
     }
 
-    let executedRules: [Rule<State, Fact>]
+    public let executedRules: [Rule<State, Fact>]
 
-    init(state: State, 
-         assertedFactsAndGrades: [Fact : Double],
-         executedRules: [Rule<State, Fact>]) {
+    internal init(state: State,
+                  assertedFactsAndGrades: [Fact : Double],
+                  executedRules: [Rule<State, Fact>]) {
         
         self.state = state
         self.assertedFactsAndGrades = assertedFactsAndGrades
@@ -43,7 +43,7 @@ struct RuleResult<State, Fact: Hashable> {
     ///
     /// If a fact is not in the facts array, its membership grade for purposes of this
     /// operation is implicitly zero.
-    func minimumGrade(forFacts facts: [Fact]) -> Double {
+    public func minimumGrade(forFacts facts: [Fact]) -> Double {
         return facts.map {
             return self.assertedFactsAndGrades[$0] ?? 0.0
         }.min() ?? 0.0
@@ -56,7 +56,7 @@ struct RuleResult<State, Fact: Hashable> {
     ///
     /// If a fact is not in the facts array, its membership grade for purposes of this
     /// operation is implicitly zero.
-    func maximumGrade(forFacts facts: [Fact]) -> Double {
+    public func maximumGrade(forFacts facts: [Fact]) -> Double {
         return facts.map {
             return self.assertedFactsAndGrades[$0] ?? 0.0
         }.max() ?? 0.0

@@ -5,12 +5,12 @@
 
 import Foundation
 
-class RuleEditor<State, Fact: Hashable> {
+public class RuleEditor<State, Fact: Hashable> {
     var state: State
 
     public private(set) var assertedFactsAndGrades = [Fact: Double]()
 
-    init(state: State) {
+    internal init(state: State) {
         self.state = state
     }
 
