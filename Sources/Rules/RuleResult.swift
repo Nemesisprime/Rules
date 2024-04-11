@@ -5,24 +5,28 @@
 
 import Foundation
 
-class RuleResult<State, Fact: Hashable> {
+struct RuleResult<State, Fact: Hashable> {
 
     /// An immutable copy of the state associated with the evaluated rule result
     let state: State
 
     /// A raw copy of the facts and grades generated from the evaluation
-    private var assertedFactsAndGrades: [Fact: Double]
+    private let assertedFactsAndGrades: [Fact: Double]
 
     /// The list of facts claimed by the rule system
     var facts: [Fact] {
         return assertedFactsAndGrades.keys.map { $0 }
     }
 
-    /// Public Initializer
-    init(state: State,
-         assertedFactsAndGrades: [Fact: Double]) {
+    let executedRules: [Rule<State, Fact>]
+
+    init(state: State, 
+         assertedFactsAndGrades: [Fact : Double],
+         executedRules: [Rule<State, Fact>]) {
+        
         self.state = state
         self.assertedFactsAndGrades = assertedFactsAndGrades
+        self.executedRules = executedRules
     }
 
     /// Returns the membership grade of the specified fact.

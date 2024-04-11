@@ -14,9 +14,10 @@ class RuleEditor<State, Fact: Hashable> {
         self.state = state
     }
 
-    public func makeResult() -> RuleResult<State, Fact> {
-        return RuleResult(state: self.state, 
-                          assertedFactsAndGrades: self.assertedFactsAndGrades)
+    public func makeResult(executedRules: [Rule<State, Fact>]) -> RuleResult<State, Fact> {
+        return RuleResult(state: self.state,
+                          assertedFactsAndGrades: self.assertedFactsAndGrades,
+                          executedRules: executedRules)
     }
 
     private static func clamp(_ grade: Double) -> Double {

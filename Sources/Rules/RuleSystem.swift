@@ -39,11 +39,9 @@ class RuleSystem<State, Fact: Hashable> {
         var executedRules = [Rule<State, Fact>]()
 
         var loopInterval = 0
-        var continueLoop = true
 
-        while continueLoop {
+        while true {
             guard agenda.indices.contains(loopInterval) else {
-                continueLoop = false
                 break
             }
 
@@ -61,6 +59,6 @@ class RuleSystem<State, Fact: Hashable> {
             }
         }
 
-        return ruleEditor.makeResult()
+        return ruleEditor.makeResult(executedRules: executedRules)
     }
 }
