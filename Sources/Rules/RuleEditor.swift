@@ -6,7 +6,7 @@
 import Foundation
 
 public class RuleEditor<State, Fact: Hashable> {
-    var state: State
+    public private(set) var state: State
 
     public private(set) var assertedFactsAndGrades = [Fact: Double]()
 

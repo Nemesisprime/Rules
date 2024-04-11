@@ -8,6 +8,8 @@ import Foundation
 /// A RuleSystem object manages a list of rules
 public class RuleSystem<State, Fact: Hashable> {
 
+    public init() { }
+
     // MARK: Managing Rules
 
     public private(set) var rules = [Rule<State, Fact>]()
