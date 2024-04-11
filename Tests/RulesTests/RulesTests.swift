@@ -11,7 +11,6 @@ final class RulesTests: XCTestCase {
             case playerInSight
         }
 
-
         let ruleSystem = RuleSystem<State, Fact>()
 
         let closeToPlayerRule = Rule<State, Fact> { editor in
@@ -77,7 +76,6 @@ final class RulesTests: XCTestCase {
             case didRun
         }
 
-
         let ruleSystem = RuleSystem<State, Fact>()
 
         // Runs before the other, even though its second in the array
@@ -108,7 +106,6 @@ final class RulesTests: XCTestCase {
             case didRun
         }
 
-
         let ruleSystem = RuleSystem<State, Fact>()
 
         // Skipped until the second rule has been run
@@ -135,34 +132,61 @@ final class RulesTests: XCTestCase {
     }
 
 
-//    func testTertiaryExample() throws {
-//        struct State {
-//            var health: Int
-//        }
-//
-//        enum Fact {
-//            case criticalCondition
-//            case hurt
-//            case healthy
-//        }
-//
-//
-//        let ruleSystem = RuleSystem<State, Fact>()
-//
-//        let rule = Rule<State, Fact>(
-////            fact: .criticalCondition
-//        )
-////        let rule1 = Rule<State, Fact>(
-//////            fact: .hurt
-////        )
-////        let rule2 = Rule<State, Fact>(
-//////            fact: .healthy
-////        )
-//
-//        let outcome = ruleSystem.evaluate(state: State(health: 50))
-//
-//        let criticalGrade = outcome.grade(for: .criticalCondition)
-//        let hurtGrade = outcome.grade(for: .hurt)
-//        let healthyGrade = outcome.grade(for: .healthy)
-//    }
+    func testSecondHandExample() throws {
+        struct State {
+            var distance: Double
+            var maxSightDistance: Double
+
+            var charge: Double
+            var fullCharge: Double
+        }
+
+        enum Fact {
+            case playerNear
+            case laserChargePower
+            case shouldFire
+        }
+
+        let ruleSystem = RuleSystem<State, Fact>()
+
+        let closeToPlayerRule = Rule<State, Fact> { editor in
+            return editor.state.distance <= 50
+        } action: { editor in
+            // The closer, the higher the value
+            let isNearValue = Double(1.0 - editor.state.distance / editor.state.maxSightDistance)
+            editor.assert(.playerNear, grade: isNearValue)
+        }
+
+        let chargeLevel = Rule<State, Fact> { editor in
+            return true
+        } action: { editor in
+            // The more full, the higher
+            let isAlmostCharged = editor.state.charge / editor.state.fullCharge
+            editor.assert(.laserChargePower, grade: isAlmostCharged)
+        }
+
+        let shouldFireRule = Rule<State, Fact>(salience: 1) { editor in
+            return true
+        } action: { editor in
+            let partialResult = editor.makeResult()
+            let shouldFire = partialResult.minimumGrade(forFacts: [
+                .playerNear,
+                .laserChargePower
+            ])
+            editor.assert(.shouldFire, grade: shouldFire)
+        }
+
+        ruleSystem.add(rules: [closeToPlayerRule, chargeLevel, shouldFireRule])
+
+        let state = State(
+            distance: 15,
+            maxSightDistance: 30,
+            charge: 60,
+            fullCharge: 100
+        )
+        let result = ruleSystem.evaluate(state: state)
+        let grade = result.grade(for: .shouldFire)
+
+        XCTAssertEqual(grade, 0.5)
+    }
 }

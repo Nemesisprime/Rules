@@ -14,7 +14,7 @@ class RuleEditor<State, Fact: Hashable> {
         self.state = state
     }
 
-    public func makeResult(executedRules: [Rule<State, Fact>]) -> RuleResult<State, Fact> {
+    public func makeResult(executedRules: [Rule<State, Fact>] = []) -> RuleResult<State, Fact> {
         return RuleResult(state: self.state,
                           assertedFactsAndGrades: self.assertedFactsAndGrades,
                           executedRules: executedRules)
