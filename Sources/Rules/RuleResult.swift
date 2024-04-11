@@ -35,5 +35,31 @@ struct RuleResult<State, Fact: Hashable> {
     public func grade(for fact: Fact) -> Double {
         return self.assertedFactsAndGrades[fact] ?? 0.0
     }
+
+    /// Returns the lowest membership grade among the specified facts.
+    ///
+    /// In fuzzy logic, this method is called the AND Zadeh operator, because it
+    /// corresponds to the AND operator in Boolean logic.
+    ///
+    /// If a fact is not in the facts array, its membership grade for purposes of this
+    /// operation is implicitly zero.
+    func minimumGrade(forFacts facts: [Fact]) -> Double {
+        return facts.map {
+            return self.assertedFactsAndGrades[$0] ?? 0.0
+        }.min() ?? 0.0
+    }
+
+    /// Returns the highest membership grade among the specified facts.
+    ///
+    /// In fuzzy logic, this method is called the OR Zadeh operator, because it
+    /// corresponds to the OR operator in Boolean logic.
+    ///
+    /// If a fact is not in the facts array, its membership grade for purposes of this
+    /// operation is implicitly zero.
+    func maximumGrade(forFacts facts: [Fact]) -> Double {
+        return facts.map {
+            return self.assertedFactsAndGrades[$0] ?? 0.0
+        }.max() ?? 0.0
+    }
 }
 
