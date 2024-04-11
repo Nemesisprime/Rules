@@ -27,7 +27,7 @@ class RuleSystem<State, Fact: Hashable> {
     }
 
     private func makeAgenda() -> [Rule<State, Fact>] {
-        return self.rules.sorted { $0.salience > $1.salience }
+        return self.rules.sorted { $0.salience < $1.salience }
     }
 
     // MARK: Evaluate
@@ -54,6 +54,9 @@ class RuleSystem<State, Fact: Hashable> {
                 executedRules.append(rule)
 
                 rule.performAction(editor: ruleEditor)
+                
+                // Reset Agenda loop level since we just evaluated a rule.
+                loopInterval = 0
             } else {
                 loopInterval += 1
             }
