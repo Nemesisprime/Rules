@@ -6,7 +6,7 @@
 import Foundation
 
 /// A rule
-class Rule<State, Fact> {
+class Rule<State, Fact: Hashable> {
 
     /// The importance of the rule relative to others in a rule system’s agenda.
     var salience: Int = 0

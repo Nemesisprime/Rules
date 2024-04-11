@@ -6,8 +6,7 @@
 import Foundation
 
 /// A RuleSystem object manages a list of rules
-class RuleSystem<State, Fact> {
-
+class RuleSystem<State, Fact: Hashable> {
 
     // MARK: Managing Rules
 
@@ -29,31 +28,52 @@ class RuleSystem<State, Fact> {
 
     // MARK: Evaluate
 
-    public func evaluate(state: State) -> Outcome<State, Fact> {
-        return Outcome(state: state)
+    public func evaluate(state: State) -> RuleResult<State, Fact> {
+        return RuleResult(state: state)
     }
 
 
 }
 
-class RuleEditor<State, Fact> {
+class RuleEditor<State, Fact: Hashable> {
     var state: State
+
+    public private(set) var assertedFactsAndGrades = [Fact: Double]()
 
     init(state: State) {
         self.state = state
     }
 
-    public func assert(_ fact: Fact, grade: Double) {
-
+    private static func clamp(_ grade: Double) -> Double {
+        return max(0, min(1.0, grade))
     }
 
-    public func retract(_ fact: Fact, grade: Double) {
+    public func assert(_ fact: Fact, grade: Double = 1.0) {
+        if let currentFactGrade = assertedFactsAndGrades[fact] {
+            let updatedFactGrade = Self.clamp(currentFactGrade + grade)
+            self.assertedFactsAndGrades[fact] = updatedFactGrade
+        } else {
+            self.assertedFactsAndGrades[fact] = Self.clamp(grade)
+        }
+    }
 
+    public func retract(_ fact: Fact, grade: Double = 1.0) {
+        // We only can retract facts that are currently established
+        guard let currentFactGrade = assertedFactsAndGrades[fact] else {
+            return
+        }
+
+        let updatedFactGrade = currentFactGrade - grade
+        if updatedFactGrade > 0.0 {
+            assertedFactsAndGrades[fact] = updatedFactGrade
+        } else {
+            assertedFactsAndGrades.removeValue(forKey: fact)
+        }
     }
 }
 
 
-class Outcome<State, Fact> {
+class RuleResult<State, Fact: Hashable> {
     var state: State
     var facts = [Any]()
 

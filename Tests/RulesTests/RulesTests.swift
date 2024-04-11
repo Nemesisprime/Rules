@@ -1,8 +1,6 @@
 import XCTest
 @testable import Rules
 
-
-
 final class RulesTests: XCTestCase {
     func testSimpleBooleanExample() throws {
         struct State {
@@ -30,12 +28,12 @@ final class RulesTests: XCTestCase {
 
         ruleSystem.add(rules: [closeToPlayerRule, farFromPlayerRule])
 
-        let outcome = ruleSystem.evaluate(state: State(distance: 20))
-        let grade = outcome.grade(for: .playerInSight)
+        let result = ruleSystem.evaluate(state: State(distance: 20))
+        let grade = result.grade(for: .playerInSight)
         XCTAssertEqual(grade, 1.0)
 
-        let outcome2 = ruleSystem.evaluate(state: State(distance: 75))
-        let grade2 = outcome2.grade(for: .playerInSight)
+        let result2 = ruleSystem.evaluate(state: State(distance: 75))
+        let grade2 = result2.grade(for: .playerInSight)
         XCTAssertEqual(grade2, 0)
     }
 
@@ -62,13 +60,13 @@ final class RulesTests: XCTestCase {
         ruleSystem.add(rule: closeToPlayerRule)
 
         let state = State(distance: 15, maxSightDistance: 30)
-        let outcome = ruleSystem.evaluate(state: state)
-        let grade = outcome.grade(for: .playerNear)
+        let result = ruleSystem.evaluate(state: state)
+        let grade = result.grade(for: .playerNear)
         XCTAssertEqual(grade, 0.5)
 
         let state2 = State(distance: 35, maxSightDistance: 30)
-        let outcome2 = ruleSystem.evaluate(state: state2)
-        let grade2 = outcome2.grade(for: .playerNear)
+        let result2 = ruleSystem.evaluate(state: state2)
+        let grade2 = result2.grade(for: .playerNear)
         XCTAssertEqual(grade2, 0)
     }
 
