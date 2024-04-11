@@ -26,21 +26,41 @@ class RuleSystem<State, Fact: Hashable> {
         self.rules = []
     }
 
+    private func makeAgenda() -> [Rule<State, Fact>] {
+        return self.rules.sorted { $0.salience > $1.salience }
+    }
+
     // MARK: Evaluate
 
     public func evaluate(state: State) -> RuleResult<State, Fact> {
         let ruleEditor = RuleEditor<State, Fact>(state: state)
-        let rulesToRun = self.agenda
-        for rule in rulesToRun {
+        
+        var agenda = self.makeAgenda()
+        var executedRules = [Rule<State, Fact>]()
+
+        var loopInterval = 0
+        var continueLoop = true
+
+        while continueLoop {
+            guard agenda.indices.contains(loopInterval) else {
+                continueLoop = false
+                break
+            }
+
+            let rule = agenda[loopInterval]
+
+            // Either we evaluate (and remove the item at the current index)
+            // or we bump the index forward
             if rule.evaluatePredicate(editor: ruleEditor) {
+                agenda.remove(at: loopInterval)
+                executedRules.append(rule)
+
                 rule.performAction(editor: ruleEditor)
+            } else {
+                loopInterval += 1
             }
         }
 
         return ruleEditor.makeResult()
-    }
-
-    var agenda: [Rule<State, Fact>] {
-        return self.rules.sorted { $0.salience > $1.salience }
     }
 }
