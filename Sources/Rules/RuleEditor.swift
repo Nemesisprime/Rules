@@ -15,7 +15,8 @@ class RuleEditor<State, Fact: Hashable> {
     }
 
     public func makeResult() -> RuleResult<State, Fact> {
-        return RuleResult(state: self.state, assertedFactsAndGrades: self.assertedFactsAndGrades)
+        return RuleResult(state: self.state, 
+                          assertedFactsAndGrades: self.assertedFactsAndGrades)
     }
 
     private static func clamp(_ grade: Double) -> Double {
@@ -47,15 +48,28 @@ class RuleEditor<State, Fact: Hashable> {
 }
 
 class RuleResult<State, Fact: Hashable> {
-    var state: State
+
+    /// An immutable copy of the state associated with the evaluated rule result
+    let state: State
+
+    /// A raw copy of the facts and grades generated from the evaluation
     private var assertedFactsAndGrades = [Fact: Double]()
 
+    /// The list of facts claimed by the rule system
+    var facts: [Fact] {
+        return assertedFactsAndGrades.keys.map { $0 }
+    }
+
+    /// Public Initializer
     init(state: State, assertedFactsAndGrades: [Fact: Double]) {
         self.state = state
     }
 
-    public func grade(for: Fact) -> Double {
-        return 0.0
+    /// Returns the membership grade of the specified fact.
+    ///
+    /// If the specified fact is not in the facts array, this method returns 0.0.
+    public func grade(for fact: Fact) -> Double {
+        return self.assertedFactsAndGrades[fact] ?? 0.0
     }
 }
 
