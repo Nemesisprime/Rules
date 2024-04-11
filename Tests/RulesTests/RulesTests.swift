@@ -15,13 +15,13 @@ final class RulesTests: XCTestCase {
         let ruleSystem = RuleSystem<State, Fact>()
 
         let closeToPlayerRule = Rule<State, Fact> { editor in
-            return editor.state.distance < 50
+            return editor.state.distance <= 50
         } action: { editor in
             editor.assert(.playerInSight, grade: 1.0)
         }
 
         let farFromPlayerRule = Rule<State, Fact> { editor in
-            return editor.state.distance >= 50
+            return editor.state.distance > 50
         } action: { editor in
             editor.retract(.playerInSight, grade: 1.0)
         }

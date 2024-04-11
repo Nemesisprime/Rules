@@ -53,7 +53,7 @@ class RuleResult<State, Fact: Hashable> {
     let state: State
 
     /// A raw copy of the facts and grades generated from the evaluation
-    private var assertedFactsAndGrades = [Fact: Double]()
+    private var assertedFactsAndGrades: [Fact: Double]
 
     /// The list of facts claimed by the rule system
     var facts: [Fact] {
@@ -61,8 +61,10 @@ class RuleResult<State, Fact: Hashable> {
     }
 
     /// Public Initializer
-    init(state: State, assertedFactsAndGrades: [Fact: Double]) {
+    init(state: State, 
+         assertedFactsAndGrades: [Fact: Double]) {
         self.state = state
+        self.assertedFactsAndGrades = assertedFactsAndGrades
     }
 
     /// Returns the membership grade of the specified fact.
