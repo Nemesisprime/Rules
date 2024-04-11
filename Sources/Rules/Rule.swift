@@ -15,9 +15,9 @@ open class Rule<State, Fact: Hashable> {
     private let predicate: (RuleEditor<State, Fact>) -> Bool
     private let action: (RuleEditor<State, Fact>) -> Void
 
-    init(salience: Int = 0,
-         predicate: @escaping (RuleEditor<State, Fact>) -> Bool,
-         action: @escaping (RuleEditor<State, Fact>) -> Void) {
+    public init(salience: Int = 0,
+                predicate: @escaping (RuleEditor<State, Fact>) -> Bool,
+                action: @escaping (RuleEditor<State, Fact>) -> Void) {
         self.salience = salience
         self.predicate = predicate
         self.action = action
