@@ -246,7 +246,7 @@ final class RulesTests: XCTestCase {
             return true
         } action: { editor in
             let partialResult = editor.makeResult()
-            let shouldFire = partialResult.minimumGrade(forFacts: [
+            let shouldFire = partialResult.minimumGrade(for: [
                 .playerNear,
                 .laserChargePower
             ])

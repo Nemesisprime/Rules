@@ -43,7 +43,7 @@ public struct RuleResult<State, Fact: Hashable> {
     ///
     /// If a fact is not in the facts array, its membership grade for purposes of this
     /// operation is implicitly zero.
-    public func minimumGrade(forFacts facts: [Fact]) -> Double {
+    public func minimumGrade(for facts: [Fact]) -> Double {
         return facts.map {
             return self.assertedFactsAndGrades[$0] ?? 0.0
         }.min() ?? 0.0
@@ -56,7 +56,7 @@ public struct RuleResult<State, Fact: Hashable> {
     ///
     /// If a fact is not in the facts array, its membership grade for purposes of this
     /// operation is implicitly zero.
-    public func maximumGrade(forFacts facts: [Fact]) -> Double {
+    public func maximumGrade(for facts: [Fact]) -> Double {
         return facts.map {
             return self.assertedFactsAndGrades[$0] ?? 0.0
         }.max() ?? 0.0

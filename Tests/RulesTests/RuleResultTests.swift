@@ -41,7 +41,7 @@ final class RuleResultTests: XCTestCase {
                                              ],
                                              executedRules: [])
 
-        XCTAssertEqual(result.minimumGrade(forFacts: [
+        XCTAssertEqual(result.minimumGrade(for: [
             .playerInSight, .chargeLevel
         ]), 0.5)
     }
@@ -61,7 +61,7 @@ final class RuleResultTests: XCTestCase {
                                              ],
                                              executedRules: [])
 
-        XCTAssertEqual(result.minimumGrade(forFacts: [
+        XCTAssertEqual(result.minimumGrade(for: [
             .playerInSight, .chargeLevel, .fleeAbility
         ]), 0.0)
     }
@@ -81,7 +81,7 @@ final class RuleResultTests: XCTestCase {
                                              ],
                                              executedRules: [])
 
-        XCTAssertEqual(result.maximumGrade(forFacts: [
+        XCTAssertEqual(result.maximumGrade(for: [
             .playerInSight,
             .chargeLevel,
             .fleeAbility
@@ -103,7 +103,7 @@ final class RuleResultTests: XCTestCase {
                                              ],
                                              executedRules: [])
 
-        XCTAssertEqual(result.maximumGrade(forFacts: [
+        XCTAssertEqual(result.maximumGrade(for: [
             .fleeAbility
         ]), 0.0)
     }
